@@ -10,12 +10,7 @@ class Unionfind
 		std::vector<int> par;
 
 		Unionfind(int n):par(n)
-		{
-			for (int i = 0; i < n; i++)
-			{
-				par.at(i) = i;
-			}
-		}
+		{}
 
 		int find(int x)
 		{
