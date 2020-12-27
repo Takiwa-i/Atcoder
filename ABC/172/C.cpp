@@ -1,66 +1,58 @@
 #include <iostream>
-#include <queue>
+#include <vector>
 #include <algorithm>
 
-int main(void)
+typedef unsigned long long ull;
+
+
+bool check(ull middle, std::vector<ull>& A, std::vector<ull>& B, ull k, ull n, ull m)
 {
-	unsigned long long n, m, k, ans, count;
-	unsigned long long a, b, mb;
-	std::queue<unsigned long long> A;
-	std::queue<unsigned long long> B;
+	ull time = 4294967295;
+	for (ull i = 0; i <= n; i++)
+	{
+		if (middle - i <= m)
+			time = std::min(time, A[i] + B[middle - i]);
+		if (time <= k)
+			return true;
+	}
+	if (time > k)
+		return false;
+	return true;
+}
+
+int main()
+{
+	ull n, m, k;
 	std::cin >> n >> m >> k;
-	for (int i = 0; i < n; i++)
+	std::vector<ull> A(n + 1);
+	std::vector<ull> B(m + 1);
+	A[0] = 0;
+	B[0] = 0;
+	for (int i = 1; i < n + 1; i++)
 	{
+		ull a;
 		std::cin >> a;
-		A.push(a);
+		A[i] = a + A[i - 1];
 	}
-	for (int i = 0; i < m; i++)
+	for (int i = 1; i < m + 1; i++)
 	{
+		ull b;
 		std::cin >> b;
-		B.push(b);
+		B[i] = b + B[i - 1];
 	}
-	ans = 0;
-	count = 0;
-	while (count <= k)
+	ull bottom = 0;
+	ull top = m + n;
+	while (bottom + 1 < top)
 	{
-		if (A.empty() && B.empty())
-			break ;
-		if (!A.empty() && !B.empty())
-		{
-			if (A.front() <= B.front())
-			{
-				mb = A.front();
-				A.pop();
-			}
-			else
-			{
-				mb = B.front();
-				B.pop();
-			}
-			if (count > k - mb)
-				break ;
-			count += mb;
-			++ans;
-		}
-		else if (B.empty())
-		{
-			mb = A.front();
-			A.pop();
-			if (count > k - mb)
-				break ;
-			count += mb;
-			++ans;
-		}
-		else if (A.empty())
-		{
-			mb = B.front();
-			B.pop();
-			if (count > k - mb)
-				break ;
-			count += mb;
-			++ans;
-		}
+		ull middle = (bottom + top) / 2;
+		if (check(middle, A, B, k, n, m))
+			bottom = middle;
+		else
+			top = middle; 
 	}
-	std::cout << ans << std::endl;
-	return (0);
+	if (check(top, A, B, k, n, m))
+		std::cout << top << '\n';
+	else
+		std::cout << bottom << '\n';
+	return 0;
 }
