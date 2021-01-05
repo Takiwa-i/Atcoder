@@ -68,3 +68,29 @@ long long com(long long n, long long k)
 	return (fact[n] * (finv[k] * finv[n - k] % MOD) % MOD);
 }
 
+std::vector<std::pair<long, long> > factorize(long long n)
+{
+	std::vector<std::pair <long,long> > res;
+	for (long long i = 2; i * i <= n; i++)
+	{
+		if (n % i != 0)
+			continue ;
+		int num = 0;
+		while (n % i == 0)
+		{
+			++num;
+			n /= i;
+		}
+		res.push_back(std::make_pair(i, num));
+	}
+	if (n != 1)
+		res.push_back(std::make_pair(n, 1));
+	return (res);
+}
+
+long long gcd(long long a, long long b)
+{
+	if (b == 0)
+		return (a);
+	return (gcd(b, a % b));
+}
