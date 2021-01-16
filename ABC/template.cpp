@@ -2,7 +2,7 @@
 #include <vector>
 
 
-#define MOD 100000000
+#define MOD 1000000007
 
 class Unionfind
 {
@@ -93,4 +93,18 @@ long long gcd(long long a, long long b)
 	if (b == 0)
 		return (a);
 	return (gcd(b, a % b));
+}
+
+
+long long power(long long x, long long n)
+{
+	long long ans = 1;
+	while (n > 0)
+	{
+		if (n & 1)
+			ans = ans * x % MOD;
+		x = x * x % MOD;
+		n /= 2;
+	}
+	return (ans);
 }
