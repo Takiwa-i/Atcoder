@@ -9,12 +9,12 @@ class Unionfind
 	public:
 		std::vector<int> par;
 
-		Unionfind(int n):par(n)
+		Unionfind(int n):par(n, -1)
 		{}
 
 		int find(int x)
 		{
-			if (par[x] == x)
+			if (par[x] < 0)
 				return x;
 			else
 				return par[x] = find(par[x]);
@@ -42,7 +42,6 @@ class Unionfind
 			return -par[find(x)];
 		}
 };
-
 
 
 long long com(long long n, long long k)
