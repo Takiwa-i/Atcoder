@@ -20,7 +20,6 @@ void dfs(long long &count, long long n, long long now, int used)
 	
 }
 
-
 int main(void)
 {
 	long long n;
