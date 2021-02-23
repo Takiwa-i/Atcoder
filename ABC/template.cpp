@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 
 #define MOD 1000000007
@@ -107,3 +108,21 @@ long long power(long long x, long long n)
 	}
 	return (ans);
 }
+
+std::vector<long long> divisor(long long n)
+{
+	std::vector<long long> R;
+	for (long long i = 1; i * i <= n; i++)
+	{
+		if (n % i == 0)
+		{
+			R.push_back(i);
+			long long j = n / i;
+			if (j != i)
+				R.push_back(j);
+		}
+	}
+	std::sort(R.begin(), R.end());
+	return (R);
+}
+
