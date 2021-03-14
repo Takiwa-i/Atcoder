@@ -11,55 +11,45 @@ int main(void)
 {
 	int n, m, q;
 	std::cin >> n >> m >> q;
-	std::vector<std::pair<ll, ll> > V(n);
-	std::vector<ll> X(m);
+	std::vector<int> W(n);
+	std::vector<int> V(n);
 	for (int i = 0; i < n; i++)
-	{
-		ll w, v;
-		std::cin >> w >> v;
-		V[i] = std::make_pair(w, v);
-	}
-	std::sort(V.begin(), V.end());
+		std::cin >> W[i] >> V[i];
+	std::vector<int> X(m);
 	for (int i = 0; i < m; i++)
-	{
 		std::cin >> X[i];
-	}
-	std::sort(X.begin(), X.end());
-	std::vector<ll> A(q);
-	for (int i = 0; i < q; i++)
+	for (int count = 0; count < q; count++)
 	{
 		int l, r;
-		ll ans = 0;
 		std::cin >> l >> r;
-		l--;
-		r--;
-		std::queue<ll> Q;
-		std::map<int, int> D;
-		for (int j = 0; j < m; j++)
+		--l;
+		--r;
+		std::vector<int> Box;
+		for (int i = 0; i < m; i++)
 		{
-			if (j >= l && j <= r)
-				continue ;
-			Q.push(X[j]);
+			if (i < l || i > r)
+				Box.push_back(X[i]);
 		}
-		while (!Q.empty() && D.size() < n)
+		std::sort(Box.begin(), Box.end());
+		std::vector<bool> Used(n);
+		int ans = 0;
+		for (int i = 0; i < Box.size(); i++)
 		{
-			ll top = Q.front();
-			Q.pop();
+			std::pair<int, int> Best = std::make_pair(-1, -1);
 			for (int j = 0; j < n; j++)
 			{
-				if (D[j] > 0 || V[j].first > top)
-					continue;
-				else
-				{
-					ans += V[j].second;
-					D[j]++;
-					break ;
-				}
+				if (Used[j])
+					continue ;
+				if (W[j] > Box[i])
+					continue ;
+				Best = std::max(Best, std::make_pair(V[j], j));
 			}
+			if (Best.second == -1)
+				continue ;
+			Used[Best.second] = true;
+			ans += Best.first;
 		}
-		A[i] = ans;
+		std::cout << ans << std::endl;
 	}
-	for (int i = 0; i < q; i++)
-		std::cout << A[i] << std::endl;
 	return (0);
 }
