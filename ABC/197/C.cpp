@@ -6,22 +6,27 @@
 int main(void)
 {
 	int n;
+	int ans = (1 << 30);
 	std::cin >> n;
-	std::vector<long long> A(n);
+	std::vector<int> A(n);
 	for (int i = 0; i < n; i++)
 		std::cin >> A[i];
-	std::vector<std::vector<long long> > T(n, std::vector<long long>(n));
-	std::vector<int> D(30, 0);
-	for (int i = 0; i < n; i++)
+	for (int bit = 0; bit < (1 << (n - 1)); bit++)	
 	{
-		T[i][0] = A[i];
-	}
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = i + 1; j < n; j++)
+		int now = 0;
+		int o = 0;
+		for (int i = 0; i < n; i++)
 		{
-			T[i][j - i] = (T[i][j - 1] | A[j]);
+			o |= A[i];
+			if (bit & (1 << i))
+			{
+				now ^= o;
+				o = 0;
+			}
 		}
+		now ^= o;
+		ans = std::min(ans, now);
 	}
+	std::cout << ans << std::endl;
 	return (0);
 }
